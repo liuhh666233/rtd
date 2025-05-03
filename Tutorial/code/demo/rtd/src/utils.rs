@@ -8,7 +8,7 @@ use std::{
 
 // 自定义错误类型, 用于解析 Item 时, 如果解析失败, 则返回该错误类型
 #[derive(Debug)]
-pub struct ParseItemError(String);
+pub struct ParseItemError(pub String);
 // 定义 Result 类型, 用于返回解析结果
 type Result<T> = std::result::Result<T, ParseItemError>;
 
@@ -39,7 +39,7 @@ impl From<ParseBoolError> for ParseItemError {
 // TODO(xiaobo): 如果Item中新增其他数据类型,也需要定义新的错误类型转换函数
 
 /// 将时间戳转换为日期时间字符串
-fn timestamp_to_datetime_string(timestamp: Option<i64>) -> String {
+pub fn timestamp_to_datetime_string(timestamp: Option<i64>) -> String {
     timestamp.map_or(String::new(), |time_stamp| {
         NaiveDateTime::from_timestamp_opt(time_stamp, 0).map_or(String::new(), |utc| {
             Local
@@ -51,12 +51,12 @@ fn timestamp_to_datetime_string(timestamp: Option<i64>) -> String {
 }
 
 /// 将时间戳转换为原始字符串
-fn timestamp_to_raw_string(timestamp: Option<i64>) -> String {
+pub fn timestamp_to_raw_string(timestamp: Option<i64>) -> String {
     timestamp.map_or(String::new(), |time_stamp| time_stamp.to_string())
 }
 
 /// 将字符串转换为时间戳,注意这里返回的是重载的 Result 类型, 而不是 Option 类型
-fn str_to_timestamp(s: &str) -> Result<Option<i64>> {
+pub fn str_to_timestamp(s: &str) -> Result<Option<i64>> {
     if s.is_empty() {
         Ok(None)
     } else {
