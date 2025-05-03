@@ -183,15 +183,15 @@ pub fn add_item(item: Item) -> Result<()> {
     Ok(())
 }
 
-// pub fn delete_item(id: u32) -> Result<()> {
-//     let to_update_item = get_item_by_id(id)?;
-//     let offset = get_offset_by_id(id)?;
-//     Csv::new()?.splice(
-//         offset as u64,
-//         to_update_item.to_string().len() as u64,
-//         &to_update_item.to_string(),
-//     )
-// }
+pub fn delete_item(id: u32) -> Result<()> {
+    let to_delete_item = get_item_by_id(id)?;
+    let offset = get_offset_by_id(id)?;
+    Csv::new()?.splice(
+        offset as u64,
+        to_delete_item.to_string().len() as u64 + 1,
+        "",
+    )
+}
 
 pub fn update_item(item: Item) -> Result<()> {
     let to_update_item = get_item_by_id(item.id())?;

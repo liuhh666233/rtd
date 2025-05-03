@@ -101,7 +101,7 @@ pub fn destroy_deleted() -> Result<String> {
 }
 
 pub fn destroy_item(id: u32) -> Result<String> {
-    delete_item(id)?;
+    storage::delete_item(id)?;
     Ok(format!("Destroyed [{}]\n", id))
 }
 
