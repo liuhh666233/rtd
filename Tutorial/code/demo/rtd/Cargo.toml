@@ -5,4 +5,8 @@ edition = "2024"
 
 [dependencies]
 chrono = "0.4.41"
-clap = "4.5.37"
+clap = { version = "4.5.37", features = ["derive"] }
+
+[[bin]]
+name = "rtd"
+path = "src/main.rs"
