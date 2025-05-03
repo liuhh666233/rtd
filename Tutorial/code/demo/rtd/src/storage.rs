@@ -1,5 +1,5 @@
 // 使用self,导入模块本身
-use crate::model::{self, *};
+use crate::model::*;
 use crate::utils::ParseItemError;
 use std::env::{self, VarError};
 use std::error::Error;
@@ -75,7 +75,6 @@ impl From<ParseItemError> for StorageError {
 }
 
 struct Csv {
-    filename: String,
     file: File,
 }
 
@@ -112,13 +111,9 @@ impl Csv {
         if !path.exists() {
             let mut file = Csv::create(path)?;
             file.write_all(b"id,name,completed,deleted,createdAt,completedAt,deletedAt\n")?;
-            Ok(Self {
-                filename: filename.to_string(),
-                file,
-            })
+            Ok(Self { file })
         } else {
             Ok(Self {
-                filename: filename.to_string(),
                 file: Csv::open(path)?,
             })
         }
@@ -188,15 +183,15 @@ pub fn add_item(item: Item) -> Result<()> {
     Ok(())
 }
 
-pub fn delete_item(id: u32) -> Result<()> {
-    let to_update_item = get_item_by_id(id)?;
-    let offset = get_offset_by_id(id)?;
-    Csv::new()?.splice(
-        offset as u64,
-        to_update_item.to_string().len() as u64,
-        &item.to_string(),
-    )
-}
+// pub fn delete_item(id: u32) -> Result<()> {
+//     let to_update_item = get_item_by_id(id)?;
+//     let offset = get_offset_by_id(id)?;
+//     Csv::new()?.splice(
+//         offset as u64,
+//         to_update_item.to_string().len() as u64,
+//         &to_update_item.to_string(),
+//     )
+// }
 
 pub fn update_item(item: Item) -> Result<()> {
     let to_update_item = get_item_by_id(item.id())?;

@@ -1,10 +1,5 @@
 use chrono::*;
-use std::{
-    error::Error,
-    fmt::Display,
-    num::ParseIntError,
-    str::{FromStr, ParseBoolError},
-};
+use std::{error::Error, fmt::Display, num::ParseIntError, str::ParseBoolError};
 
 // 自定义错误类型, 用于解析 Item 时, 如果解析失败, 则返回该错误类型
 #[derive(Debug)]
@@ -41,9 +36,9 @@ impl From<ParseBoolError> for ParseItemError {
 /// 将时间戳转换为日期时间字符串
 pub fn timestamp_to_datetime_string(timestamp: Option<i64>) -> String {
     timestamp.map_or(String::new(), |time_stamp| {
-        NaiveDateTime::from_timestamp_opt(time_stamp, 0).map_or(String::new(), |utc| {
+        DateTime::from_timestamp(time_stamp, 0).map_or(String::new(), |utc| {
             Local
-                .from_utc_datetime(&utc)
+                .from_utc_datetime(&utc.naive_utc())
                 .format("%Y-%m-%d %H:%M:%S")
                 .to_string()
         })

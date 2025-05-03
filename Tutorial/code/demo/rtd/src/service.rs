@@ -1,6 +1,6 @@
 use crate::{
     model::Item,
-    storage::{self, get_item_by_id, get_max_id, StorageError},
+    storage::{self, get_item_by_id, get_max_id, update_item, StorageError},
 };
 use chrono::Local;
 use std::{error::Error, fmt::Display};
